@@ -14,4 +14,6 @@ COPY . .
 
 RUN chmod +x ./update.sh
 
-CMD ["./update.sh"]
+COPY ./update.sh /usr/local/bin/update-dns
+
+CMD ["update-dns"]
