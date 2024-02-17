@@ -13,6 +13,8 @@ ENV TZ=Asia/Bangkok\
     AUTH_KEY="AUTH_KEY" \
     CUR_IP="1.1.1.1"
 
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 COPY ./update.sh /app/
 
 RUN chmod +x /app/update.sh
