@@ -11,11 +11,16 @@ while true; do
     # Fetch the current public IP address
     curIp=$(curl -sS https://ipinfo.io/ip)
 
+    if [ "$DEBUG" == "true" ]; then
+        echo "Debug mode enabled. Printing IP Addresses:"
+        echo "Current IP: $curIp"
+        echo "Previous IP: $prevIp"
+    fi
+
     # Compare the current IP with the previous one
     if [ "$prevIp" != "$curIp" ]; then
         # Update the previous IP with the current one
         prevIp="$curIp"
-
         # Construct JSON payload for the API request
         JSON_PAYLOAD='{
             "content": "'"$curIp"'",
@@ -25,6 +30,11 @@ while true; do
             "comment": "'"$(date)"' '"$curIp"'",
             "ttl": 3600
         }'
+
+        if [ "$DEBUG" == "true" ]; then
+            echo "Debug mode enabled. Printing JSON payload:"
+            echo "$JSON_PAYLOAD"
+        fi
 
         # Display a message about the IP update
         echo "Updated IP address at $(date): $curIp"

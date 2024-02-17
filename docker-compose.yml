@@ -13,3 +13,4 @@ services:
       - EMAIL=${EMAIL}
       - AUTH_KEY=${AUTH_KEY}
       - CUR_IP=${CUR_IP}
+      - DEBUG=${DEBUG}
