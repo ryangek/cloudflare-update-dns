@@ -3,8 +3,6 @@ FROM alpine:latest
 RUN apk update && \
     apk add --no-cache curl
 
-WORKDIR /app
-
 # Set environment variables
 ENV ZONE_ID="ZONE_ID" \      
     RECORD_ID="RECORD_ID" \    
