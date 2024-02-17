@@ -2,6 +2,7 @@
 
 # Set the API endpoint
 API_URL="https://api.cloudflare.com/client/v4/zones/$ZONE_ID/dns_records/$RECORD_ID"
+echo "API URL: $API_URL"
 
 # Store the initial public IP address
 prevIp="$CUR_IP"
@@ -11,11 +12,8 @@ while true; do
     # Fetch the current public IP address
     curIp=$(curl -sS https://ipinfo.io/ip)
 
-    if [ "$DEBUG" == "true" ]; then
-        echo "Debug mode enabled. Printing IP Addresses:"
-        echo "Current IP: $curIp"
-        echo "Previous IP: $prevIp"
-    fi
+    echo "Current IP: $curIp"
+    echo "Previous IP: $prevIp"
 
     # Compare the current IP with the previous one
     if [ "$prevIp" != "$curIp" ]; then
@@ -31,10 +29,7 @@ while true; do
             "ttl": 3600
         }'
 
-        if [ "$DEBUG" == "true" ]; then
-            echo "Debug mode enabled. Printing JSON payload:"
-            echo "$JSON_PAYLOAD"
-        fi
+        echo "Payload: $JSON_PAYLOAD"
 
         # Display a message about the IP update
         echo "Updated IP address at $(date): $curIp"
