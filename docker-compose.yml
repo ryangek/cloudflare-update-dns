@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  curl-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      - ZONE_ID=${ZONE_ID}
+      - RECORD_ID=${RECORD_ID}
+      - EMAIL=${EMAIL}
+      - AUTH_KEY=${AUTH_KEY}
+      - CUR_IP=${CUR_IP}
