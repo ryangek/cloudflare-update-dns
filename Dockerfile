@@ -3,7 +3,7 @@ FROM alpine:latest
 RUN apk update && \
     apk add --no-cache bash curl tzdata
 
-WORKDIR app/
+WORKDIR /app/
 
 # Set environment variables
 ENV TZ=Asia/Bangkok\
@@ -11,7 +11,8 @@ ENV TZ=Asia/Bangkok\
     RECORD_ID="RECORD_ID" \
     EMAIL="EMAIL" \
     AUTH_KEY="AUTH_KEY" \
-    CUR_IP="1.1.1.1"
+    CUR_IP="1.1.1.1" \
+    DOMAIN_NAME="cloudflare.com"
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 

@@ -6,6 +6,7 @@ echo "API URL: $API_URL"
 
 # Store the initial public IP address
 prevIp="$CUR_IP"
+domainName="$DOMAIN_NAME"
 
 # Main loop
 while true; do
@@ -22,7 +23,7 @@ while true; do
         # Construct JSON payload for the API request
         JSON_PAYLOAD='{
             "content": "'"$curIp"'",
-            "name": "pinesproject.online",
+            "name": "'"$domainName"'",
             "proxied": true,
             "type": "A",
             "comment": "'"$(date)"' '"$curIp"'",
@@ -36,11 +37,11 @@ while true; do
 
         # Make the API call to update the DNS record
         curl --request PATCH \
-             --url "$API_URL" \
-             --header 'Content-Type: application/json' \
-             --header "X-Auth-Email: $EMAIL" \
-             --header "X-Auth-Key: $AUTH_KEY" \
-             --data "$JSON_PAYLOAD"
+            --url "$API_URL" \
+            --header 'Content-Type: application/json' \
+            --header "X-Auth-Email: $EMAIL" \
+            --header "X-Auth-Key: $AUTH_KEY" \
+            --data "$JSON_PAYLOAD"
     fi
 
     # Sleep for 5 minutes before checking again

@@ -8,6 +8,7 @@ services:
     env_file:
       - .env
     environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
       - ZONE_ID=${ZONE_ID}
       - RECORD_ID=${RECORD_ID}
       - EMAIL=${EMAIL}
