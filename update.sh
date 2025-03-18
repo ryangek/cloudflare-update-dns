@@ -24,7 +24,7 @@ while true; do
         JSON_PAYLOAD='{
             "content": "'"$curIp"'",
             "name": "'"$domainName"'",
-            "proxied": true,
+            "proxied": false,
             "type": "A",
             "comment": "'"$(date)"' '"$curIp"'",
             "ttl": 3600
