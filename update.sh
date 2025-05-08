@@ -6,8 +6,11 @@ echo "API URL: $API_URL"
 
 # Store the initial public IP address
 # prevIp="$CUR_IP"
+curIpv6=$(curl -s http://ip6.me/api/ | cut -d',' -f2)
 prevIpv6="$CUR_IPV6"
 domainName="$DOMAIN_NAME"
+
+echo "Initial Current IPV6: $curIpv6"
 
 # Main loop
 while true; do
