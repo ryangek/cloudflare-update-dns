@@ -29,7 +29,7 @@ while true; do
             "content": "'"$curIp"'",
             "name": "'"$domainName"'",
             "proxied": false,
-            "type": "AAAA",
+            "type": "A",
             "comment": "'"$(date)"' '"$curIp"'",
             "ttl": 3600
         }'
