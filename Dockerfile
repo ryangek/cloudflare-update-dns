@@ -1,7 +1,8 @@
 FROM alpine:latest
 
+# Install required tools: curl, bash, tzdata, iproute2
 RUN apk update && \
-    apk add --no-cache bash curl tzdata
+    apk add --no-cache bash curl tzdata iproute2
 
 WORKDIR /app/
 

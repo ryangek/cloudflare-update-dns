@@ -1,4 +1,4 @@
-version: "3"
+version: "3.7" 
 
 services:
   curl-service:
@@ -16,3 +16,14 @@ services:
       - CUR_IP=${CUR_IP}
       - CUR_IPV6=${CUR_IPV6}
       - DEBUG=${DEBUG}
+    networks:
+      - ipv6net
+
+networks:
+  ipv6net:
+    driver: bridge
+    enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+        - subnet: "2403:6200:8857:c01b::/64"
