@@ -1,5 +1,12 @@
 #!/bin/bash
 
+CLOUDFLARE_ZONE_ID := your_zone_id
+CLOUDFLARE_RECORD_ID := your_record_id
+CLOUDFLARE_DOMAIN_NAME := your_domain_name
+CLOUDFLARE_CUR_IPV6 := your_current_ipv6
+CLOUDFLARE_EMAIL := your_email
+CLOUDFLARE_AUTH_KEY := your_auth_key
+
 # Set the API endpoint and other constants
 API_URL="https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/dns_records/$CLOUDFLARE_RECORD_ID"
 DOMAIN_NAME="$CLOUDFLARE_DOMAIN_NAME"
