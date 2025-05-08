@@ -1,79 +1,71 @@
 #!/bin/bash
 
-CLOUDFLARE_ZONE_ID=your_zone_id
-CLOUDFLARE_RECORD_ID=your_record_id
-CLOUDFLARE_DOMAIN_NAME=your_domain_name
-CLOUDFLARE_CUR_IPV6=your_current_ipv6
-CLOUDFLARE_EMAIL=your_email
-CLOUDFLARE_AUTH_KEY=your_auth_key
+# Config
+CLOUDFLARE_ZONE_ID="your_zone_id"
+CLOUDFLARE_RECORD_ID="your_record_id"
+CLOUDFLARE_DOMAIN_NAME="your_domain_name"
+CLOUDFLARE_EMAIL="your_email"
+CLOUDFLARE_AUTH_KEY="your_auth_key"
 
-# Set the API endpoint and other constants
 API_URL="https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/dns_records/$CLOUDFLARE_RECORD_ID"
-DOMAIN_NAME="$CLOUDFLARE_DOMAIN_NAME"
-CUR_IPV6="$CLOUDFLARE_CUR_IPV6"
-EMAIL="$CLOUDFLARE_EMAIL"
-AUTH_KEY="$CLOUDFLARE_AUTH_KEY"
+LAST_IPV6_FILE="last_ipv6.txt"
 
-echo "API update dns: $API_URL"
+echo "Cloudflare DNS update API: $API_URL"
 
-# Function to get the current IPv6 address
+# Function to get the current public IPv6 address
 get_current_ipv6() {
-    echo "$(curl -s http://ip6.me/api/ | cut -d',' -f2)"
+    curl -s http://ip6.me/api/ | cut -d',' -f2
 }
 
 # Function to update the Cloudflare DNS record
 update_dns_record() {
-    local curIpv6=$1
-    local payload
+    local curIpv6="$1"
 
-    # Construct the JSON payload for the API request
-    payload=$(cat <<EOF
+    local payload
+    payload=$(
+        cat <<EOF
 {
     "content": "$curIpv6",
-    "name": "$DOMAIN_NAME",
+    "name": "$CLOUDFLARE_DOMAIN_NAME",
     "proxied": false,
     "type": "AAAA",
     "comment": "$(date) $curIpv6",
     "ttl": 3600
 }
 EOF
-)
+    )
 
-    # Display the payload
-    echo "Payload: $payload"
+    echo "Sending update to Cloudflare..."
 
-    # Make the API call to update the DNS record
-    curl --request PATCH \
+    response=$(curl --silent --show-error --fail --request PATCH \
         --url "$API_URL" \
-        --header 'Content-Type: application/json' \
-        --header "X-Auth-Email: $EMAIL" \
-        --header "X-Auth-Key: $AUTH_KEY" \
-        --data "$payload"
+        --header "Content-Type: application/json" \
+        --header "X-Auth-Email: $CLOUDFLARE_EMAIL" \
+        --header "X-Auth-Key: $CLOUDFLARE_AUTH_KEY" \
+        --data "$payload")
 
-    CLOUDFLARE_CUR_IPV6="$curIpv6"
+    echo "Response from Cloudflare: $response"
 }
 
-# Function to check if the IP has changed
+# Function to check if the IPv6 has changed and update it
 check_and_update_ip() {
-    local prevIpv6=$1
-    local curIpv6
+    local prevIpv6=""
+    [[ -f "$LAST_IPV6_FILE" ]] && prevIpv6=$(<"$LAST_IPV6_FILE")
 
-    # Get the current IPv6 address
+    local curIpv6
     curIpv6=$(get_current_ipv6)
 
-    # Log current and previous IPv6
-    echo "Current IPV6: $curIpv6"
-    echo "Previous IPV6: $prevIpv6"
+    echo "Previous IPv6: $prevIpv6"
+    echo "Current IPv6:  $curIpv6"
 
-    # Compare the current and previous IPv6 address
-    if [ "$prevIpv6" != "$curIpv6" ]; then
-        echo "IPv6 has changed. Updating DNS record..."
+    if [[ -n "$curIpv6" && "$prevIpv6" != "$curIpv6" ]]; then
+        echo "IPv6 has changed. Updating Cloudflare DNS record..."
         update_dns_record "$curIpv6"
-        prevIpv6="$curIpv6"  # Update the previous IP to the current one
+        echo "$curIpv6" >"$LAST_IPV6_FILE"
     else
         echo "IPv6 has not changed. No update needed."
     fi
 }
 
-# Main execution
-check_and_update_ip "$CUR_IPV6"
+# Main
+check_and_update_ip
