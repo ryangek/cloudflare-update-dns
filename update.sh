@@ -15,8 +15,8 @@ while true; do
     # curIp=$(curl -sS https://ipinfo.io/ip)
     curIpv6=$(curl -s http://ip6.me/api/ | cut -d',' -f2)
 
-    echo "Current IP: $curIpv6"
-    echo "Previous IP: $prevIpv6"
+    echo "Current IPV6: $curIpv6"
+    echo "Previous IPV6: $prevIpv6"
 
     # Compare the current IP with the previous one
     if [ "$prevIpv6" != "$curIpv6" ]; then
