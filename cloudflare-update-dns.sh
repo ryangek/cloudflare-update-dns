@@ -49,6 +49,8 @@ EOF
         --header "X-Auth-Email: $EMAIL" \
         --header "X-Auth-Key: $AUTH_KEY" \
         --data "$payload"
+
+    CLOUDFLARE_CUR_IPV6="$curIpv6"
 }
 
 # Function to check if the IP has changed
