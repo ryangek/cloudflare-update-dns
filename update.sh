@@ -5,7 +5,7 @@ API_URL="https://api.cloudflare.com/client/v4/zones/$ZONE_ID/dns_records/$RECORD
 echo "API URL: $API_URL"
 
 # Store the initial public IP address
-prevIp="$CUR_IP"
+# prevIp="$CUR_IP"
 prevIpv6="$CUR_IPV6"
 domainName="$DOMAIN_NAME"
 
