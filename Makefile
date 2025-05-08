@@ -2,7 +2,7 @@
 .PHONY: add-cron list-cron remove-cron
 
 PATH_SCRIPT := ~/Workspace/cloudflare-update-dns/cloudflare-update-dns.sh
-CRON_JOB := */5 * * * * $(PATH_SCRIPT) >> /var/log/cloudflare_ipv6.log 2>&1
+CRON_JOB := */5 * * * * $(PATH_SCRIPT) >> ./cloudflare_ipv6.log 2>&1
 
 # Add the cron job
 add-cron:
