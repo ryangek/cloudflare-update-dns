@@ -6,39 +6,38 @@ echo "API URL: $API_URL"
 
 # Store the initial public IP address
 # prevIp="$CUR_IP"
-curIpv6=$(curl -s http://ip6.me/api/ | cut -d',' -f2)
-prevIpv6="$CUR_IPV6"
+curIp=$(curl -sS https://ipinfo.io/ip)
+prevIp="$CUR_IP"
 domainName="$DOMAIN_NAME"
 
-echo "Initial Current IPV6: $curIpv6"
+echo "Initial Current IP: $curIp"
 
 # Main loop
 while true; do
     # Fetch the current public IP address
-    # curIp=$(curl -sS https://ipinfo.io/ip)
-    curIpv6=$(curl -s http://ip6.me/api/ | cut -d',' -f2)
+    curIp=$(curl -sS https://ipinfo.io/ip)
 
-    echo "Current IPV6: $curIpv6"
-    echo "Previous IPV6: $prevIpv6"
+    echo "Current IP: $curIp"
+    echo "Previous IP: $prevIp"
 
     # Compare the current IP with the previous one
-    if [ "$prevIpv6" != "$curIpv6" ]; then
+    if [ "$prevIp" != "$curIp" ]; then
         # Update the previous IP with the current one
-        prevIpv6="$curIpv6"
+        prevIp="$curIp"
         # Construct JSON payload for the API request
         JSON_PAYLOAD='{
-            "content": "'"$curIpv6"'",
+            "content": "'"$curIp"'",
             "name": "'"$domainName"'",
             "proxied": false,
             "type": "AAAA",
-            "comment": "'"$(date)"' '"$curIpv6"'",
+            "comment": "'"$(date)"' '"$curIp"'",
             "ttl": 3600
         }'
 
         echo "Payload: $JSON_PAYLOAD"
 
         # Display a message about the IP update
-        echo "Updated IP address at $(date): $curIpv6"
+        echo "Updated IP address at $(date): $curIp"
 
         # Make the API call to update the DNS record
         curl --request PATCH \
