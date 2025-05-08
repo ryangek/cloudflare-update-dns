@@ -11,7 +11,7 @@ add-cron:
 	@echo "✅ Cron job added."
 
 add-cron-reboot:
-	@echo "$(CRON_JOB)" | crontab -
+	@echo "$(CRON_JOB_REBOOT)" | crontab -
 	@echo "✅ Cron job reboot added."
 
 # List current cron jobs
